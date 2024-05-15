@@ -2,16 +2,17 @@
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\TransactionResource\Pages;
-use App\Filament\App\Resources\TransactionResource\RelationManagers;
-use App\Models\Transaction;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Transaction;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\App\Resources\TransactionResource\Pages;
+use App\Filament\App\Resources\TransactionResource\RelationManagers;
 
 class TransactionResource extends Resource
 {
@@ -22,44 +23,30 @@ class TransactionResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('account_id')
-                    ->relationship('account', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('transaction_type')
-                    ->required(),
-                Forms\Components\TextInput::make('transaction_status')
-                    ->required(),
-            ]);
+            ->schema(Transaction::getForm());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('account.id')
+                TextColumn::make('account.account_type')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('amount')
+                TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('transaction_type'),
-                Tables\Columns\TextColumn::make('transaction_status'),
-                Tables\Columns\TextColumn::make('deleted_at')
+                TextColumn::make('transaction_type'),
+                TextColumn::make('transaction_status'),
+                TextColumn::make('deleted_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                    ->sortable(),
+                TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                    ->sortable(),
+                TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 //

@@ -29,7 +29,8 @@ class AppPanelProvider extends PanelProvider
             ->registration()
             ->login()
             ->spa()
-            ->profile(EditProfile::class, isSimple: false)
+            ->databaseNotifications()
+            // ->profile(EditProfile::class, isSimple: false)
             ->colors([
                 'primary' => Color::Amber,
             ])

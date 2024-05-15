@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('account_type', ['escrow', 'deposit']);
+            $table->string('account_type');
             $table->integer('target_amount')->default(0);
             $table->integer('current_amount')->default(0);
-            $table->integer('amount')->default(0);
+            // $table->integer('amount')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

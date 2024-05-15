@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Enums\TransactionTypeEnum;
 use App\Enums\TransactionStatusEnum;
+use Filament\Forms\Components\Section;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +25,31 @@ class Transaction extends Model
         "transaction_type" => TransactionTypeEnum::class,
     ];
 
+    public static function getForm()
+    {
+        return [
+            Section::make()->columns(2)->schema([
+                Select::make('account_id')
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm(Account::getForm())
+                    ->editOptionForm(Account::getForm())
+                    ->relationship('account', 'account_type')
+                    ->required(),
+                TextInput::make('amount')
+                    ->required()
+                    ->numeric(),
+                Select::make('transaction_type')
+                    ->options(TransactionTypeEnum::class)
+                    ->enum(TransactionTypeEnum::class)
+                    ->required(),
+                TextInput::make('transaction_status')
+                    ->readOnly()
+                    ->default(TransactionStatusEnum::PENDING),
+            ])
+        ];
+    }
+
     public static function getTransactions()
     {
         $user = Auth::user();
@@ -37,7 +65,7 @@ class Transaction extends Model
 
         if ($user && $user->account) {
             $transactions = $user->account->transactions()
-                                       ->where('transaction_type', TransactionTypeEnum::DEPOSIT)
+                                       ->where('transaction_type', TransactionTypeEnum::DEPOSIT_TO_ESCROW)
                                        ->where('transaction_status', TransactionStatusEnum::COMPLETED)
                                        ->get();
 

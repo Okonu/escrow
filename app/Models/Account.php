@@ -18,11 +18,11 @@ class Account extends Model
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    protected $fillable = ['user_id', 'account_type', 'target_amount', 'current_amount', 'amount'];
+    protected $fillable = ['user_id', 'account_type', 'target_amount', 'current_amount'];
 
-    protected $casts = [
-        "account_type" => AccountTypeEnum::class,
-    ];
+    // protected $casts = [
+    //     "account_type" => AccountTypeEnum::class,
+    // ];
 
     public static function getForm()
     {
@@ -46,13 +46,13 @@ class Account extends Model
             TextInput::make('target_amount')
                 ->required()
                 ->numeric(),
-            TextInput::make('target_amount')
+            TextInput::make('current_amount')
                 ->required()
                 ->numeric(),
-            TextInput::make('amount')
-                ->label('Transfer Amount')
-                ->required()
-                ->numeric(),
+            // TextInput::make('amount')
+            //     ->label('Transfer Amount')
+            //     ->required()
+            //     ->numeric(),
         ];
     }
 
