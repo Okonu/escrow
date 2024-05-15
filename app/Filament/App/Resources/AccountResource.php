@@ -2,16 +2,19 @@
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\AccountResource\Pages;
-use App\Filament\App\Resources\AccountResource\RelationManagers;
-use App\Models\Account;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Account;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\App\Resources\AccountResource\Pages;
+use App\Filament\App\Resources\AccountResource\RelationManagers;
 
 class AccountResource extends Resource
 {
@@ -23,15 +26,15 @@ class AccountResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
+                Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('account_type')
+                TextInput::make('account_type')
                     ->required(),
-                Forms\Components\TextInput::make('target_amount')
+                TextInput::make('target_amount')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('current_amount')
+                TextInput::make('current_amount')
                     ->required()
                     ->numeric(),
             ]);
@@ -41,25 +44,25 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('account_type'),
-                Tables\Columns\TextColumn::make('target_amount')
+                TextColumn::make('account_type'),
+                TextColumn::make('target_amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('current_amount')
+                TextColumn::make('current_amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
+                TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

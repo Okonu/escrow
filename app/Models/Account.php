@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\AccountTypeEnum;
+use Illuminate\Support\Facades\Auth;
 
 class Account extends Model
 {
@@ -19,6 +20,15 @@ class Account extends Model
     protected $casts = [
         "account_type" => AccountTypeEnum::class,
     ];
+
+    public static function getCurrentAmount()
+    {
+        $user = Auth::user();
+
+        if($user && $user->account) {
+            return $user->account->current_amount;
+        }
+    }
 
     public function user(): BelongsTo
     {
