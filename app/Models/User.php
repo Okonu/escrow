@@ -3,17 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Enums\UserTypeEnum;
+use Laravel\Sanctum\HasApiTokens;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Notifications\Notifiable;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Section;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -52,6 +56,33 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
       
+        ];
+    }
+
+    public static function getForm()
+    {
+        return [
+            Section::make()->columns(2)->schema([
+                TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('username')
+                    ->required()
+                    ->unique()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                DateTimePicker::make('email_verified_at')
+                    ->readOnly(),
+                TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('user_type'),
+            ])
+            
         ];
     }
     public function accounts(): HasMany
