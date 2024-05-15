@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('account_type', ['escrow', 'deposit']);
-            $table->integer('target_amount', 8, 2);
-            $table->integer('current_amount', 8, 2);
+            $table->integer('target_amount')->default(0);
+            $table->integer('current_amount')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

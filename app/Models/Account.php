@@ -21,13 +21,25 @@ class Account extends Model
         "account_type" => AccountTypeEnum::class,
     ];
 
-    public static function getCurrentAmount()
+    public static function getCurrentAmount(): int
     {
         $user = Auth::user();
 
         if($user && $user->account) {
             return $user->account->current_amount;
         }
+
+        return 0;
+    }
+    public static function getTargetAmount(): int
+    {
+        $user = Auth::user();
+
+        if($user && $user->account) {
+            return $user->account->target_amount;
+        }
+
+        return 0;
     }
 
     public function user(): BelongsTo
