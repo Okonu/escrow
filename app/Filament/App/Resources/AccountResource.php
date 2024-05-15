@@ -25,19 +25,7 @@ class AccountResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                TextInput::make('account_type')
-                    ->required(),
-                TextInput::make('target_amount')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('current_amount')
-                    ->required()
-                    ->numeric(),
-            ]);
+            ->schema(Account::getForm());
     }
 
     public static function table(Table $table): Table

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('account_type', ['escrow', 'deposit']);
             $table->integer('target_amount')->default(0);
             $table->integer('current_amount')->default(0);
+            $table->integer('amount')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
